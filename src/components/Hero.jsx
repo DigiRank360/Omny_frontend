@@ -1,32 +1,145 @@
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { HERO_BADGES, HERO_STRIP } from '../utils/constants';
 import LaptopArt from './LaptopArt';
+
 export default function Hero() {
   return (
-    <section id="home" className="relative overflow-hidden bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 text-white">
-      <div className="mx-auto grid min-h-[660px] max-w-7xl items-center gap-10 px-4 py-20 sm:py-24 lg:min-h-[620px] lg:grid-cols-2 lg:py-24">
-        <div>
-          <p className="text-sm font-bold uppercase tracking-wide text-slate-100 sm:text-lg">Your trusted B2B partner for</p>
-          <h1 className="hero-title-depth mt-2 text-5xl font-extrabold leading-none sm:text-7xl">REFURBISHED<br /><span className="text-brand-light">LAPTOPS</span></h1>
-          <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-1 text-[11px] font-semibold uppercase">
-            {HERO_BADGES.map((b, i) => <li key={b} className={i ? 'border-l border-white/40 pl-4' : ''}>{b}</li>)}
-          </ul>
-          <p className="mt-6 max-w-md text-base leading-7 text-slate-200">Omny X is Delhi's leading B2B supplier of high-quality refurbished laptops for dealers across India.</p>
-          <div className="mt-7 grid grid-cols-2 gap-4 rounded-lg border border-brand-light/25 bg-white/[0.06] p-4 sm:grid-cols-5">
-            {HERO_STRIP.map(([I, a, b]) => <div key={a} className="flex items-center gap-2 text-[10px] font-semibold uppercase leading-tight"><I size={22} className="shrink-0" /><span>{a}<br />{b}</span></div>)}
+    <section 
+      id="home" 
+      className="relative min-h-[calc(100vh-65px)] w-full overflow-hidden bg-navy-950 text-white flex items-center justify-center py-12 lg:py-0"
+    >
+      {/* ================= BACKGROUND GRAPHICS & AMBIENT LIGHTS ================= */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+        {/* Glowing Orbs */}
+        <div className="absolute -top-40 -left-20 w-[500px] h-[500px] rounded-full bg-blue-600/20 blur-[130px]" />
+        <div className="absolute top-1/2 right-0 w-[450px] h-[450px] rounded-full bg-brand-light/15 blur-[140px]" />
+        <div className="absolute -bottom-20 left-1/3 w-[400px] h-[400px] rounded-full bg-indigo-600/15 blur-[120px]" />
+
+        {/* Tech Mesh Pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.07]" />
+        
+        {/* Subtle Radial Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-navy-950/60 to-navy-950" />
+      </div>
+
+      {/* ================= MAIN CONTAINER ================= */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
+          
+          {/* ---------------- LEFT COLUMN: CONTENT (7 Cols on LG) ---------------- */}
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left lg:col-span-7">
+            
+            {/* Top Pill / Badge */}
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-brand-light/30 bg-brand-light/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-brand-light backdrop-blur-md shadow-inner transition-all hover:border-brand-light/50">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-light opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-light"></span>
+              </span>
+              <span className="tracking-wide uppercase font-semibold text-[11px] sm:text-xs">
+                Your Trusted B2B Laptop Partner
+              </span>
+              <Sparkles className="h-3.5 w-3.5 text-brand-light" />
+            </div>
+
+            {/* Main Headline */}
+            <h1 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl leading-[1.08]">
+              REFURBISHED <br />
+              <span className="bg-gradient-to-r from-brand-light via-blue-300 to-indigo-200 bg-clip-text text-transparent">
+                LAPTOPS
+              </span>
+            </h1>
+
+            {/* Sub-Badges / Key Features */}
+            <div className="mt-5 flex flex-wrap items-center justify-center lg:justify-start gap-2">
+              {HERO_BADGES.map((badge) => (
+                <div 
+                  key={badge} 
+                  className="flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-semibold tracking-wider text-slate-300 backdrop-blur-md uppercase"
+                >
+                  <CheckCircle2 className="h-3.5 w-3.5 text-brand-light" />
+                  <span>{badge}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Body Description */}
+            <p className="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-slate-300 font-normal">
+              Omny X is Delhi’s premier B2B supplier of high-grade refurbished laptops. We empower 1000+ dealers across India with tested stock, margins, and pan-India warranty support.
+            </p>
+
+            {/* Feature Strip (Grid Cards) */}
+            <div className="mt-8 w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
+              {HERO_STRIP.map(([Icon, title, subtitle]) => (
+                <div 
+                  key={title} 
+                  className="group relative flex flex-col items-center lg:items-start justify-center rounded-xl border border-white/10 bg-white/[0.03] p-3 text-center lg:text-left backdrop-blur-md transition-all duration-300 hover:border-brand-light/40 hover:bg-white/[0.07] hover:-translate-y-1"
+                >
+                  <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-brand-light/10 text-brand-light border border-brand-light/20 transition-colors group-hover:bg-brand-light group-hover:text-navy-950">
+                    <Icon size={16} />
+                  </div>
+                  <span className="text-[11px] font-bold uppercase tracking-tight text-slate-200 leading-tight">
+                    {title}
+                  </span>
+                  <span className="text-[10px] font-medium text-slate-400 leading-tight mt-0.5">
+                    {subtitle}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA Action Buttons */}
+            <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+              <a 
+                href="#register" 
+                className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-brand-light px-8 py-4 text-sm font-bold text-navy-950 shadow-lg shadow-brand-light/25 transition-all duration-300 hover:bg-white hover:shadow-brand-light/40 hover:-translate-y-0.5 active:translate-y-0 w-full sm:w-auto"
+              >
+                <span>Become a B2B Dealer</span>
+                <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+              
+              <a 
+                href="#products" 
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-8 py-4 text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 hover:bg-white/10 hover:border-white/30 hover:-translate-y-0.5 w-full sm:w-auto"
+              >
+                <span>View Live Stock</span>
+              </a>
+            </div>
+
           </div>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <a href="#register" className="btn-primary">Become a B2B Dealer <ArrowRight size={16} /></a>
-            <a href="#products" className="btn-outline">View Live Stock</a>
+
+          {/* ---------------- RIGHT COLUMN: VISUAL ART & STATS (5 Cols on LG) ---------------- */}
+          <div className="relative flex items-center justify-center lg:col-span-5 lg:justify-end mt-8 lg:mt-0">
+            
+            {/* Main Hero Illustration Container */}
+            <div className="relative w-full max-w-lg lg:max-w-none">
+              
+              {/* Soft glow behind Laptop Artwork */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-brand-light/20 to-blue-500/20 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="relative transition-transform duration-500 hover:scale-[1.01]">
+                <LaptopArt />
+              </div>
+
+              {/* Glassmorphic Floating Trust Badge (Bottom Left/Center) */}
+              <div className="absolute -bottom-6 -left-2 sm:bottom-2 sm:-left-6 z-20 flex items-center gap-4 rounded-2xl border border-white/20 bg-navy-900/80 p-4 shadow-2xl backdrop-blur-xl ring-1 ring-white/10">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-light to-blue-600 text-navy-950 shadow-md">
+                  <ShieldCheck size={26} className="text-navy-950" />
+                </div>
+                <div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-2xl font-black tracking-tight text-white">1000+</span>
+                    <span className="text-xs font-bold text-brand-light">Dealers</span>
+                  </div>
+                  <p className="text-[11px] font-medium text-slate-300 leading-tight">
+                    Trusted B2B Network across India
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
           </div>
-        </div>
-        <div className="relative">
-          <LaptopArt />
-          <div className="absolute -bottom-2 right-0 z-20 flex h-36 w-36 flex-col items-center justify-center rounded-full border-4 border-brand-light bg-navy-950 text-center shadow-lg sm:h-44 sm:w-44">
-            <span className="text-[10px] font-bold uppercase">Trusted by</span>
-            <span className="text-3xl font-extrabold text-brand-light">1000+</span>
-            <span className="text-xs font-bold uppercase">Dealers<br />across India</span>
-          </div>
+
         </div>
       </div>
     </section>
