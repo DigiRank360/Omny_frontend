@@ -18,9 +18,11 @@ function DealerSignIn({ onSignedIn }) {
       const { data } = await dealerApi.post('/dealer/auth/login', { email, password });
       localStorage.setItem('omnyx_dealer_token', data.token);
       const profile = await dealerApi.get('/dealer/me');
+      window.dispatchEvent(new Event('omnyx-dealer-auth'));
       onSignedIn(profile.data);
     } catch (error) {
       localStorage.removeItem('omnyx_dealer_token');
+      window.dispatchEvent(new Event('omnyx-dealer-auth'));
       toast.error(errMsg(error));
     }
     finally { setBusy(false); }
@@ -63,7 +65,7 @@ function DealerDashboard({ dealer, onLogout }) {
   const filteredProducts = products.filter(product => `${product.name} ${product.brand} ${product.model || ''} ${product.category?.name || ''}`.toLowerCase().includes(query.trim().toLowerCase()));
 
   return <main>
-    <section className="bg-navy-950 py-9 text-white sm:py-12">
+    <section className="bg-navy-950 py-14 text-white sm:py-16 lg:py-20">
       <div className="mx-auto flex max-w-7xl flex-col justify-between gap-5 px-4 sm:flex-row sm:items-end">
         <div><p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-light">Dealer workspace</p><h1 className="mt-2 text-3xl font-extrabold">Welcome, {dealer.fullName}</h1><p className="mt-2 text-sm text-slate-300">{dealer.businessName} <span className="mx-1 text-slate-500">·</span> {dealer.city}, {dealer.state}</p></div>
         <button type="button" onClick={onLogout} className="btn w-fit border border-white/30 text-white hover:bg-white/10"><LogOut size={16} />Sign out</button>
@@ -81,7 +83,7 @@ function DealerDashboard({ dealer, onLogout }) {
           <div><p className="text-xs font-bold uppercase tracking-wide text-brand">Dealer inventory</p><h2 className="mt-1 text-2xl font-extrabold text-navy-950">Current available stock</h2><p className="mt-1 text-sm text-slate-600">Prices and availability can change. Contact us to confirm before placing an order.</p></div>
           <label className="relative block sm:w-72"><span className="sr-only">Search available products</span><Search size={16} className="absolute left-3 top-3 text-slate-400" /><input className="input pl-9" placeholder="Search stock" value={query} onChange={event => setQuery(event.target.value)} /></label>
         </div>
-        {filteredProducts.length ? <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{filteredProducts.map(product => <ProductCard key={product._id} product={product} />)}</div> : <div className="mt-6 rounded-lg border border-slate-200 bg-white px-5 py-12 text-center"><PackageCheck size={32} className="mx-auto text-slate-300" /><p className="mt-3 font-semibold text-navy-950">{loading ? 'Loading current inventory…' : query ? 'No products match your search.' : 'There is no published stock right now.'}</p><p className="mt-1 text-sm text-slate-500">Contact your account team to ask about upcoming availability.</p></div>}
+        {filteredProducts.length ? <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{filteredProducts.map(product => <ProductCard key={product._id} product={product} dealerMode />)}</div> : <div className="mt-6 rounded-lg border border-slate-200 bg-white px-5 py-12 text-center"><PackageCheck size={32} className="mx-auto text-slate-300" /><p className="mt-3 font-semibold text-navy-950">{loading ? 'Loading current inventory…' : query ? 'No products match your search.' : 'There is no published stock right now.'}</p><p className="mt-1 text-sm text-slate-500">Contact your account team to ask about upcoming availability.</p></div>}
 
         <aside className="mt-10 flex flex-col gap-4 rounded-lg border border-brand-100 bg-brand-50 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6"><div><div className="flex items-center gap-2 text-navy-950"><Headphones size={19} className="text-brand" /><h2 className="font-bold">Need dealer support?</h2></div><p className="mt-1 text-sm text-slate-600">Our team can help confirm stock, pricing and order requirements.</p></div><a href={`https://wa.me/${PHONE.replace(/\D/g, '')}?text=${encodeURIComponent(`Hi, this is ${dealer.fullName} from ${dealer.businessName}. I need dealer support.`)}`} target="_blank" rel="noreferrer" className="btn-primary w-fit">Contact account team <ArrowRight size={16} /></a></aside>
       </div>
@@ -102,13 +104,17 @@ export default function DealerPortal() {
     let active = true;
     dealerApi.get('/dealer/me')
       .then(({ data }) => { if (active) setDealer(data); })
-      .catch(() => localStorage.removeItem('omnyx_dealer_token'))
+      .catch(() => {
+        localStorage.removeItem('omnyx_dealer_token');
+        window.dispatchEvent(new Event('omnyx-dealer-auth'));
+      })
       .finally(() => { if (active) setChecking(false); });
     return () => { active = false; };
   }, []);
 
   const logout = () => {
     localStorage.removeItem('omnyx_dealer_token');
+    window.dispatchEvent(new Event('omnyx-dealer-auth'));
     setDealer(null);
   };
 

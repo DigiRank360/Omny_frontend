@@ -251,7 +251,7 @@ export function Products() {
               <label className="relative"><span className="sr-only">Filter by category</span><select className="input appearance-none pr-9" value={category} onChange={event => setCategory(event.target.value)}><option>All categories</option>{categories.map(name => <option key={name}>{name}</option>)}</select><ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} /></label>
             </div>
           </div>
-          {filtered.length ? <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{filtered.map(product => <ProductCard key={product._id} product={product} />)}</div> : <div className="py-16 text-center"><PackageSearch className="mx-auto text-slate-300" size={36} /><p className="mt-3 font-semibold text-navy-950">{loading ? 'Loading inventory…' : query || category !== 'All categories' ? 'No products match your search.' : 'No products are listed right now.'}</p><p className="mt-1 text-sm text-slate-500">{loading ? 'Please wait a moment.' : 'Contact our team to ask about upcoming stock.'}</p></div>}
+          {filtered.length ? <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{filtered.map(product => <ProductCard key={product._id} product={product} />)}</div> : <div className="py-16 text-center"><PackageSearch className="mx-auto text-slate-300" size={36} /><p className="mt-3 font-semibold text-navy-950">{loading ? 'Loading inventory…' : query || category !== 'All categories' ? 'No products match your search.' : 'No products are listed right now.'}</p><p className="mt-1 text-sm text-slate-500">{loading ? 'Please wait a moment.' : 'Contact our team to ask about upcoming stock.'}</p></div>}
         </div>
       </section>
     </main>

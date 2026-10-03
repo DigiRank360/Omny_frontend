@@ -15,9 +15,12 @@ const destinations = {
   'Business Laptop Solutions': '/products',
   'Pan-India Dispatch': '/support#dispatch',
   'Dealer Registration': '/become-a-dealer',
-  'Vendor Registration': '/become-a-vendor',
   'Become an Authorized Partner': '/become-a-dealer',
   'Quality Check': '/quality-check',
+  'Privacy Policy': '/privacy-policy',
+  'Terms & Conditions': '/terms-and-conditions',
+  'Return Policy': '/return-policy',
+  'Shipping Policy': '/shipping-policy',
   'Warranty & Returns': '/support#warranty',
   'Dispatch & Tracking': '/support#dispatch',
   'After Sales Support': '/support#after-sales',
@@ -26,9 +29,10 @@ const destinations = {
 };
 
 const footerGroups = [
-  { title: 'Quick Links', links: ['Home', 'About Us', 'Our Products', 'Dealer Registration', 'Vendor Registration', 'Become an Authorized Partner', 'Contact Us'] },
+  { title: 'Quick Links', links: ['Home', 'About Us', 'Our Products', 'Dealer Registration', 'Become an Authorized Partner', 'Contact Us'] },
   { title: 'B2B Solutions', links: ['Refurbished Laptops', 'Bulk Laptop Supply', 'Dealer & Reseller Supply', 'IT Hardware Supply', 'Business Laptop Solutions', 'Pan-India Dispatch'] },
   { title: 'For Dealers', links: ['Dealer Registration', 'Become an Authorized Partner', 'Bulk Laptop Supply', 'Dealer & Reseller Supply'] },
+  { title: 'Policies', links: ['Privacy Policy', 'Terms & Conditions', 'Return Policy', 'Shipping Policy'] },
 ];
 
 const contactActions = [
@@ -82,14 +86,14 @@ export default function Footer() {
                 <input id="newsletter-email" className="min-w-0 flex-1 border-0 bg-transparent px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-500 focus:ring-0" name="newsletterEmail" type="email" placeholder="Enter your email address" required />
                 <button className="flex w-12 shrink-0 items-center justify-center bg-brand text-white transition hover:bg-brand-dark sm:w-14" type="submit" aria-label="Submit email for updates"><ArrowRight size={20} strokeWidth={2.5} /></button>
               </div>
-              <label className="mt-4 flex max-w-full cursor-pointer items-start gap-2 text-xs leading-5 text-slate-300"><input className="mt-0.5 h-4 w-4 shrink-0 accent-brand-light" type="checkbox" required /><span>I acknowledge the <Link to="/contact?topic=terms" className="text-white underline underline-offset-2 hover:text-brand-light">Terms &amp; Conditions</Link></span></label>
+              <label className="mt-4 flex max-w-full cursor-pointer items-start gap-2 text-xs leading-5 text-slate-300"><input className="mt-0.5 h-4 w-4 shrink-0 accent-brand-light" type="checkbox" required /><span>I acknowledge the <Link to="/terms-and-conditions" className="text-white underline underline-offset-2 hover:text-brand-light">Terms &amp; Conditions</Link></span></label>
               {submitted && <p role="status" className="mt-2 text-xs text-white">Your email app is ready to send the updates request.</p>}
             </form>
           </div>
         </div>
 
         <div className="border-t border-white/15 py-8 sm:py-10">
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.1fr_1.15fr_1.15fr_1fr] lg:gap-10">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1fr_1.1fr_1fr_0.9fr_1fr] lg:gap-8">
             {footerGroups.map(({ title, links }) => <div key={title}>
               <h3 className="mb-4 flex items-center gap-2 text-base font-bold"><span className="h-4 w-1 rounded-full bg-brand-light" />{title}</h3>
               <ul className="space-y-3 text-sm text-slate-300">{links.map(label => <li key={label}><Link to={destinations[label]} className="transition hover:text-brand-light">{label}</Link></li>)}</ul>
@@ -106,7 +110,7 @@ export default function Footer() {
 
         <div className="flex flex-col gap-3 border-t border-white/15 py-5 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
           <p>&copy; {new Date().getFullYear()} omnyxglobal.in All Rights Reserved</p>
-          <div className="flex items-center gap-4"><Link to="/contact?topic=privacy" className="hover:text-white">Privacy Policy</Link><span aria-hidden="true" className="text-brand-light">|</span><Link to="/contact?topic=terms" className="hover:text-white">Terms &amp; Conditions</Link></div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2"><Link to="/privacy-policy" className="hover:text-white">Privacy Policy</Link><span aria-hidden="true" className="text-brand-light">|</span><Link to="/terms-and-conditions" className="hover:text-white">Terms &amp; Conditions</Link></div>
         </div>
       </div>
     </footer>

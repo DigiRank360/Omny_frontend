@@ -111,7 +111,7 @@ export default function Hero() {
           <div className="relative flex items-center justify-center lg:col-span-5 lg:justify-end mt-8 lg:mt-0">
             
             {/* Main Hero Illustration Container */}
-            <div className="relative w-full max-w-lg lg:max-w-none">
+            <div className="relative w-full max-w-2xl lg:max-w-none">
               
               {/* Soft glow behind Laptop Artwork */}
               <div className="absolute inset-0 bg-gradient-to-tr from-brand-light/20 to-blue-500/20 rounded-full blur-3xl pointer-events-none" />
@@ -121,16 +121,16 @@ export default function Hero() {
               </div>
 
               {/* Glassmorphic Floating Trust Badge (Bottom Left/Center) */}
-              <div className="absolute -bottom-6 -left-2 sm:bottom-2 sm:-left-6 z-20 flex items-center gap-4 rounded-2xl border border-white/20 bg-navy-900/80 p-4 shadow-2xl backdrop-blur-xl ring-1 ring-white/10">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-light to-blue-600 text-navy-950 shadow-md">
-                  <ShieldCheck size={26} className="text-navy-950" />
+              <div className="absolute bottom-3 left-3 z-20 flex max-w-[calc(100%-1.5rem)] items-center gap-3 rounded-xl border border-white/20 bg-navy-900/90 p-3 shadow-2xl backdrop-blur-xl ring-1 ring-white/10 sm:bottom-5 sm:left-5 sm:gap-4 sm:rounded-2xl sm:p-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-brand-light to-blue-600 text-navy-950 shadow-md sm:h-12 sm:w-12 sm:rounded-xl">
+                  <ShieldCheck size={23} className="text-navy-950 sm:h-[26px] sm:w-[26px]" />
                 </div>
                 <div>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-2xl font-black tracking-tight text-white">1000+</span>
+                    <span className="text-xl font-black tracking-tight text-white sm:text-2xl">1000+</span>
                     <span className="text-xs font-bold text-brand-light">Dealers</span>
                   </div>
-                  <p className="text-[11px] font-medium text-slate-300 leading-tight">
+                  <p className="text-[10px] font-medium leading-tight text-slate-300 sm:text-[11px]">
                     Trusted B2B Network across India
                   </p>
                 </div>
