@@ -47,6 +47,7 @@ export default function ProductCard({ product, dealerMode = false }) {
 
   return (
     <article
+      data-scroll-card
       role={dealerMode ? undefined : 'button'}
       tabIndex={dealerMode ? undefined : 0}
       onClick={dealerMode ? undefined : () => navigate(`/products/${product._id}`, { state: { product } })}

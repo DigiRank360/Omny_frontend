@@ -22,10 +22,53 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const page = document.querySelector('.page-enter');
+    if (!page) return undefined;
+
+    const observed = new WeakSet();
+    const observer = 'IntersectionObserver' in window
+      ? new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -56px 0px' })
+      : null;
+
+    const observePageContent = () => {
+      page.querySelectorAll('main, main section, main article, main [data-scroll-card]').forEach(element => {
+        if (observed.has(element)) return;
+        observed.add(element);
+
+        const siblings = Array.from(element.parentElement.children).filter(sibling => sibling.matches('article, [data-scroll-card]'));
+        const index = siblings.indexOf(element);
+        if (index >= 0) element.style.setProperty('--scroll-delay', `${Math.min(index, 5) * 60}ms`);
+        element.classList.add('scroll-motion');
+
+        if (observer) observer.observe(element);
+        else element.classList.add('is-visible');
+      });
+    };
+
+    observePageContent();
+    const mutations = new MutationObserver(observePageContent);
+    mutations.observe(page, { childList: true, subtree: true });
+
+    return () => {
+      observer?.disconnect();
+      mutations.disconnect();
+    };
+  }, [location.pathname]);
+
   return (<>
     <ScrollToTop />
     <Navbar />
-    <Routes>
+    <div key={location.pathname} className="page-enter">
+    <Routes location={location}>
       <Route path="/" element={<Home />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/become-a-dealer" element={<BecomeDealer />} />
@@ -42,6 +85,7 @@ export default function App() {
       <Route path="/shipping-policy" element={<Policies />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
+    </div>
     <Footer />
   </>);
 }
