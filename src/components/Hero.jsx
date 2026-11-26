@@ -11,11 +11,16 @@ export default function Hero() {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        // Smart API URL detection (same as api.js)
-        const isProduction = !window.location.hostname.includes('localhost') && window.location.hostname !== '127.0.0.1';
-        const apiUrl = isProduction 
-          ? (import.meta.env.VITE_API_URL_PROD || 'https://omnyxglobal.com/api')
-          : (import.meta.env.VITE_API_URL || 'http://localhost:3002/api');
+        // Get API URL dynamically based on current hostname
+        const protocol = window.location.protocol; // http: or https:
+        const hostname = window.location.hostname;
+        
+        let apiUrl;
+        if (hostname.includes('localhost') || hostname === '127.0.0.1') {
+          apiUrl = `${protocol}//localhost:3002/api`;
+        } else {
+          apiUrl = `${protocol}//${hostname}/api`;
+        }
         
         const backendUrl = apiUrl.replace('/api', '');
         const res = await fetch(`${apiUrl}/store/banners`);
