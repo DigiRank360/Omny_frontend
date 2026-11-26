@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import api from '../utils/api';
 
 const INTERVAL_MS = 2000;
 
@@ -11,25 +12,13 @@ export default function Hero() {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        // Get API URL dynamically based on current hostname
-        const protocol = window.location.protocol; // http: or https:
-        const hostname = window.location.hostname;
-        
-        let apiUrl;
-        if (hostname.includes('localhost') || hostname === '127.0.0.1') {
-          apiUrl = `${protocol}//localhost:3002/api`;
-        } else {
-          apiUrl = `${protocol}//${hostname}/api`;
-        }
-        
-        const backendUrl = apiUrl.replace('/api', '');
-        const res = await fetch(`${apiUrl}/store/banners`);
-        const data = await res.json();
+        const res = await api.get('/store/banners');
+        const data = res.data;
         
         if (data && data.length > 0) {
           // Filter desktop banners and sort by newest first
           const desktopBanners = data.filter(b => b.type === 'desktop').map(b => ({
-            src: b.imageUrl.startsWith('http') ? b.imageUrl : `${backendUrl}${b.imageUrl}`,
+            src: b.imageUrl.startsWith('http') ? b.imageUrl : `${api.defaults.baseURL.replace('/api', '')}${b.imageUrl}`,
             alt: `OMNYX refurbished laptop banner`
           }));
           setBanners(desktopBanners.length > 0 ? desktopBanners : []);

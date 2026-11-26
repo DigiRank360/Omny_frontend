@@ -1,20 +1,9 @@
 import axios from 'axios';
 
-// Get API URL dynamically based on current hostname at runtime
-function getApiUrl() {
-  const protocol = window.location.protocol; // http: or https:
-  const hostname = window.location.hostname;
-  
-  // Local development
-  if (hostname.includes('localhost') || hostname === '127.0.0.1') {
-    return `${protocol}//localhost:3002/api`;
-  }
-  
-  // Production - use current hostname
-  return `${protocol}//${hostname}/api`;
-}
+// Use environment variable for API URL
+// VITE_ variables are substituted at build time by Vite
+const baseURL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL_PROD || 'http://localhost:3002/api';
 
-const baseURL = getApiUrl();
 const api = axios.create({ baseURL });
 
 api.interceptors.request.use(c => {
