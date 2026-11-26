@@ -16,15 +16,28 @@ export default function Hero() {
         const data = res.data;
         
         if (data && data.length > 0) {
-          // Filter desktop banners and sort by newest first
-          const desktopBanners = data.filter(b => b.type === 'desktop').map(b => ({
-            src: b.imageUrl.startsWith('http') ? b.imageUrl : `${api.defaults.baseURL.replace('/api', '')}${b.imageUrl}`,
-            alt: `OMNYX refurbished laptop banner`
-          }));
-          setBanners(desktopBanners.length > 0 ? desktopBanners : []);
+          // Filter desktop banners and validate URLs
+          const desktopBanners = data
+            .filter(b => b.type === 'desktop' && b.imageUrl)
+            .map(b => ({
+              src: b.imageUrl.startsWith('http') ? b.imageUrl : `${api.defaults.baseURL.replace('/api', '')}${b.imageUrl}`,
+              alt: `OMNYX refurbished laptop banner`
+            }));
+          
+          if (desktopBanners.length > 0) {
+            setBanners(desktopBanners);
+            console.log(`Loaded ${desktopBanners.length} banners`);
+          } else {
+            console.warn('No desktop banners found in API response');
+            setBanners([]);
+          }
+        } else {
+          console.warn('No banners returned from API');
+          setBanners([]);
         }
       } catch (error) {
         console.error('Error fetching banners:', error);
+        setBanners([]);
       } finally {
         setLoading(false);
       }
@@ -39,10 +52,24 @@ export default function Hero() {
     return () => clearInterval(id);
   }, [paused, banners]);
 
-  if (loading || banners.length === 0) {
+  if (loading) {
+    // Show loading state
     return (
       <section id="home" className="relative w-full overflow-hidden bg-navy-950">
-        <div className="relative w-full h-[240px] sm:h-[360px] md:h-[560px] lg:h-[560px] xl:h-[859px] bg-gradient-to-r from-navy-900 to-brand-dark" />
+        <div className="relative w-full h-[240px] sm:h-[360px] md:h-[560px] lg:h-[560px] xl:h-[859px] bg-gradient-to-r from-navy-900 to-brand-dark animate-pulse" />
+      </section>
+    );
+  }
+
+  if (banners.length === 0) {
+    // Show fallback when no banners available
+    return (
+      <section id="home" className="relative w-full overflow-hidden bg-navy-950">
+        <div className="relative w-full h-[240px] sm:h-[360px] md:h-[560px] lg:h-[560px] xl:h-[859px] bg-gradient-to-r from-navy-900 to-brand-dark flex items-center justify-center">
+          <div className="text-center text-white">
+            <p className="text-sm opacity-75">Featured banners will appear here soon</p>
+          </div>
+        </div>
       </section>
     );
   }
