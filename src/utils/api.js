@@ -1,8 +1,26 @@
 import axios from 'axios';
 
-// Use environment variable for API URL
-// VITE_ variables are substituted at build time by Vite
-const baseURL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL_PROD || 'http://localhost:3002/api';
+// Detect API URL at runtime (not build time) to support multiple environments
+const getBaseURL = () => {
+  // If build-time env var is set and not localhost, use it
+  if (import.meta.env.VITE_API_URL && !import.meta.env.VITE_API_URL.includes('localhost')) {
+    return import.meta.env.VITE_API_URL;
+  }
+  
+  // For production domain, use production API
+  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+    // Use same domain as frontend for API calls
+    const protocol = window.location.protocol;
+    const hostname = window.location.hostname;
+    const port = window.location.port ? `:${window.location.port}` : '';
+    return `${protocol}//${hostname}${port}/api`;
+  }
+  
+  // Fallback for local development
+  return import.meta.env.VITE_API_URL || 'http://localhost:3002/api';
+};
+
+const baseURL = getBaseURL();
 
 const api = axios.create({ baseURL });
 

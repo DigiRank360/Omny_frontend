@@ -25,43 +25,55 @@ export default function App() {
   const location = useLocation();
 
   useEffect(() => {
-    const page = document.querySelector('.page-enter');
-    if (!page) return undefined;
+    try {
+      const page = document.querySelector('.page-enter');
+      if (!page) return undefined;
 
-    const observed = new WeakSet();
-    const observer = 'IntersectionObserver' in window
-      ? new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        });
-      }, { threshold: 0.08, rootMargin: '0px 0px -56px 0px' })
-      : null;
+      const observed = new WeakSet();
+      const observer = 'IntersectionObserver' in window
+        ? new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -56px 0px' })
+        : null;
 
-    const observePageContent = () => {
-      page.querySelectorAll('main, main section, main article, main [data-scroll-card]').forEach(element => {
-        if (observed.has(element)) return;
-        observed.add(element);
+      const observePageContent = () => {
+        try {
+          const main = page.querySelector('main');
+          if (!main) return;
+          
+          main.querySelectorAll('section, article, [data-scroll-card]').forEach(element => {
+            if (observed.has(element)) return;
+            observed.add(element);
 
-        const siblings = Array.from(element.parentElement.children).filter(sibling => sibling.matches('article, [data-scroll-card]'));
-        const index = siblings.indexOf(element);
-        if (index >= 0) element.style.setProperty('--scroll-delay', `${Math.min(index, 5) * 60}ms`);
-        element.classList.add('scroll-motion');
+            const siblings = Array.from(element.parentElement?.children || []).filter(sibling => sibling.matches('article, [data-scroll-card]'));
+            const index = siblings.indexOf(element);
+            if (index >= 0) element.style.setProperty('--scroll-delay', `${Math.min(index, 5) * 60}ms`);
+            element.classList.add('scroll-motion');
 
-        if (observer) observer.observe(element);
-        else element.classList.add('is-visible');
-      });
-    };
+            if (observer) observer.observe(element);
+            else element.classList.add('is-visible');
+          });
+        } catch (e) {
+          console.warn('ScrollReveal error:', e);
+        }
+      };
 
-    observePageContent();
-    const mutations = new MutationObserver(observePageContent);
-    mutations.observe(page, { childList: true, subtree: true });
+      observePageContent();
+      const mutations = new MutationObserver(observePageContent);
+      mutations.observe(page, { childList: true, subtree: true });
 
-    return () => {
-      observer?.disconnect();
-      mutations.disconnect();
-    };
+      return () => {
+        observer?.disconnect();
+        mutations.disconnect();
+      };
+    } catch (e) {
+      console.warn('App useEffect error:', e);
+      return undefined;
+    }
   }, [location.pathname]);
 
   return (<>
