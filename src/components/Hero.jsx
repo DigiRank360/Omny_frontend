@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import api from '../utils/api';
+import api, { bannerImageUrl } from '../utils/api';
 
 const INTERVAL_MS = 2000;
 
@@ -20,13 +20,13 @@ export default function Hero() {
           const desktopBanners = data
             .filter(b => b.type === 'desktop' && b.imageUrl)
             .map(b => ({
-              src: b.imageUrl.startsWith('http') ? b.imageUrl : `${api.defaults.baseURL.replace('/api', '')}${b.imageUrl}`,
+              src: bannerImageUrl(b.imageUrl),
               alt: `OMNYX refurbished laptop banner`
             }));
           
           if (desktopBanners.length > 0) {
             setBanners(desktopBanners);
-            console.log(`Loaded ${desktopBanners.length} banners`);
+            console.log(`Loaded ${desktopBanners.length} banners from API`);
           } else {
             console.warn('No desktop banners found in API response');
             setBanners([]);

@@ -8,7 +8,7 @@ const getBaseURL = () => {
   }
   
   // For production domain, use production API
-  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+  if (typeof window !== 'undefined' && !['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname)) {
     // Use same domain as frontend for API calls
     const protocol = window.location.protocol;
     const hostname = window.location.hostname;
@@ -23,6 +23,8 @@ const getBaseURL = () => {
 const baseURL = getBaseURL();
 
 const api = axios.create({ baseURL });
+
+export const bannerImageUrl = imageUrl => new URL(imageUrl, new URL(baseURL, window.location.origin).origin).href;
 
 api.interceptors.request.use(c => {
   const t = localStorage.getItem('omnyx_admin_token');
