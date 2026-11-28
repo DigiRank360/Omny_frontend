@@ -11,12 +11,12 @@ const trustHighlights = [
 
 export default function Hero() {
   return (
-    <section id="home" className="hero-shell relative isolate overflow-hidden bg-navy-950 text-white">
+    <section id="home" className="hero-shell relative isolate flex min-h-[calc(100vh-4rem)] flex-col overflow-hidden bg-navy-950 text-white">
       <div className="hero-grid absolute inset-0" aria-hidden="true" />
       <div className="hero-glow hero-glow-left absolute" aria-hidden="true" />
       <div className="hero-glow hero-glow-right absolute" aria-hidden="true" />
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 pb-10 pt-12 sm:px-6 sm:pb-12 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:px-8 lg:pb-14 lg:pt-16">
+      <div className="relative mx-auto grid w-full flex-1 items-center gap-12 px-4 pb-10 pt-12 sm:px-6 sm:pb-12 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:px-8 lg:pb-14 lg:pt-16">
         <div className="relative z-10 max-w-2xl">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-brand-light/30 bg-brand-light/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-sky-200">
             <span className="hero-status-dot h-1.5 w-1.5 rounded-full bg-sky-300" />
